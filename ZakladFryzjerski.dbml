@@ -1,0 +1,85 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+
+Table Usluga {
+  NazwaU String [primary key]
+  CenaBazowa integer
+  CzasWykonania integer
+  Opis varchar(100) 
+}
+
+Table Wizyta {
+  IdW integer [primary key]
+  Data timestamp
+  IdU Usluga 
+  Status statusType 
+  Obslugujacy Fryzjer
+  Obslugiwany Klient
+}
+
+Table Paragon {
+	IdW Wizyta [primary key]
+	CenaBazowa integer
+	Rabat integer
+	DoZaplaty integer
+}
+
+Table Osoba {
+  IdO varchar(21) [primary key, note: "Długość taka sama co ID zwracanego przez Google SSO"]
+	Imie varchar(15)
+	Nazwisko varchar(30)
+	Telefon varchar(15)
+	Email varchar(30) 
+  DataUrodzenia timestamp
+  Plec plecType
+}
+
+Table Fryzjer {
+  IdF Osoba [primary key] 
+  Pensja integer 
+  DataZatrudnienia timestamp
+}
+
+
+Table Klient {
+  IdK Osoba [primary key]
+	NIP varchar(10)
+	DataRejestracji timestamp
+
+}
+
+Table Kosmetyk {
+	idK integer [primary key]
+	NazwaK varchar(50) 
+	Producent varchar(30)
+	Ilosc integer [default: 1]
+	CenaZakupu integer
+	DataZakupu timestamp
+	Opis varchar(100)
+	// Chcemy wiedzieć jaki recepcjonista wydał?
+}
+
+
+Enum statusType {
+  oczekujaca
+  wTrakcie
+  zakonczona
+  odwolana
+}
+
+Enum plecType {
+  kobieta
+  mezczyzna
+}
+
+
+Ref: Wizyta.Obslugujacy > Fryzjer.IdF
+Ref: Wizyta.Obslugiwany > Klient.IdK
+Ref: Wizyta.IdU > Usluga.NazwaU
+
+Ref: Osoba.IdO - Klient.IdK 
+Ref: Osoba.IdO - Fryzjer.IdF 
+
+Ref: Paragon.IdW - Wizyta.IdW
+// Ref: users.id < follows.followed_user_id
