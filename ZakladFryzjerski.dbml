@@ -6,7 +6,13 @@ Table Usluga {
   NazwaU String [primary key]
   CenaBazowa integer
   CzasWykonania integer
-  Opis varchar(100) 
+  Opis varchar(100) [note: "Opis usługi, który będzie widoczny na stronie"]
+}
+
+Table Ocena {
+  IdO integer [primary key]
+  Ocena integer [note: "Ocena w skali 1-5"]
+  OpiniaKlienta varchar(100) [note: "Ustawiana przez klienta, gdy Status = zakonczona"] 
 }
 
 Table Wizyta {
@@ -16,6 +22,7 @@ Table Wizyta {
   Status statusType 
   Obslugujacy Fryzjer
   Obslugiwany Klient
+  OcenaKlienta Ocena
 }
 
 Table Paragon {
@@ -39,14 +46,14 @@ Table Fryzjer {
   IdF Osoba [primary key] 
   Pensja integer 
   DataZatrudnienia timestamp
+  Opis varchar(100) [note: "Opis fryzjera, który będzie widoczny na stronie"]
 }
 
 
 Table Klient {
   IdK Osoba [primary key]
-	NIP varchar(10)
+	NIP varchar(10) 
 	DataRejestracji timestamp
-
 }
 
 Table Kosmetyk {
